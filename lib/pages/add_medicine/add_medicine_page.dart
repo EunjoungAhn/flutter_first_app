@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:first_app/components/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddMedicinePage  extends StatefulWidget {
   const AddMedicinePage ({super.key});
@@ -11,6 +14,7 @@ class AddMedicinePage  extends StatefulWidget {
 
 class _AddMedicinePageState extends State<AddMedicinePage> {
   final _nameController = TextEditingController();
+  File? _pickedImage;
 
   @override
   void dispose() {
@@ -44,11 +48,28 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
               CircleAvatar(
                 radius: 40,
                 child: CupertinoButton(
-                  onPressed: () {},
-                  child: const Icon(
+                  onPressed: () {
+                    ImagePicker()
+                    .pickImage(source: ImageSource.gallery)
+                    .then((xfile) {
+                    if (xfile == null) return; // xfile이 null 일때는 다음 처리를 안하겠다.
+                      setState(() {// 위에서 거르기 때문에 이부분은 무조건 null이 될 수 없다.
+                        _pickedImage = File(xfile.path);
+                      });
+                    }); // xfile의 이미지를 담는다.
+                  },
+                  // 카메라 사용을 위한 icon의 영역 조절
+                  padding: _pickedImage == null? null : EdgeInsets.zero, // 사진 외곽에 잡힌 CupertinoButton의 defult padding 없애기
+                  // 이미지가 없을떄 아래의 설정 값으로 출력할 것이다.
+                  child: _pickedImage == null 
+                  ? const Icon(
                     CupertinoIcons.photo_camera_solid,
                     size: 30,
                     color: Colors.white,
+                  )
+                  : CircleAvatar(
+                    foregroundImage: FileImage(_pickedImage!),
+                    radius: 40,
                   ),
                 ),
               ),
