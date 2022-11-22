@@ -1,5 +1,5 @@
 import 'package:first_app/components/app_colors.dart';
-import 'package:first_app/pages/add/add_page.dart';
+import 'package:first_app/pages/add_medicine/add_medicine_page.dart';
 import 'package:first_app/pages/history/history_page.dart';
 import 'package:first_app/pages/today/today_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
   void _onAddMedicien(){
     // 새로운 레아이웃 페이지로 이동
     Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const AddPage()));
+      context, MaterialPageRoute(builder: (context) => const AddMedicinePage()));
   }
 
 }
