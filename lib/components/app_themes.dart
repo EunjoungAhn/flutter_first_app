@@ -9,6 +9,7 @@ class AppThemes {
   scaffoldBackgroundColor: Colors.white,
   splashColor: Colors.white,
   textTheme: _textTheme, //_textTheme을 바라보게 설정
+  appBarTheme: _appBarTheme,
   brightness: Brightness.light,
   visualDensity: VisualDensity.adaptivePlatformDensity,
 );
@@ -21,6 +22,15 @@ static ThemeData get darkTheme => ThemeData(
   textTheme: _textTheme, //_textTheme을 바라보게 설정
   brightness: Brightness.dark,
   visualDensity: VisualDensity.adaptivePlatformDensity,
+);
+
+// appBar 테마 만들기
+static const AppBarTheme _appBarTheme = AppBarTheme(
+  backgroundColor: Colors.white,
+  iconTheme: IconThemeData(
+    color: AppColors.primaryColor,
+  ),
+  elevation: 0, //appBar 그림자 없애기
 );
 
   static const TextTheme _textTheme = TextTheme(
