@@ -1,3 +1,4 @@
+import 'package:first_app/components/app_themes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,16 +12,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'GmarketSansTTF',
-      ),
+      theme: AppThemes.lightTheme,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
       // 기기 폰트 사이즈에 의존하고 싶지않다면
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: child!,
-	),
+	    ),
     );
   }
 }
