@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:first_app/components/app_constants.dart';
+import 'package:first_app/pages/add_medicine/add_alarm_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +15,7 @@ class AddMedicinePage  extends StatefulWidget {
 
 class _AddMedicinePageState extends State<AddMedicinePage> {
   final _nameController = TextEditingController();
-  
+  File? _medicineImage;
 
   @override
   void dispose() {
@@ -44,8 +45,12 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                 style: Theme.of(context).textTheme.headline4,
               ),
               const SizedBox(height: largeSpace),
-              const Center(
-                child: MedicineImageButton(),
+              Center(
+                child: MedicineImageButton(
+                  changeImageFile: (File? value) {
+                    _medicineImage = value;
+                  },
+                ),
               ),
               const SizedBox(height: largeSpace + regularSpace),
               Text(
@@ -62,7 +67,13 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                   hintText: '복용할 약 이름을 기입해주세요.',
                   hintStyle: Theme.of(context).textTheme.bodyText2,
                   contentPadding: textFieldContentPadding,
+                  
                 ),
+                // 키보드를 눌러서 끄면 비활성화가 처리가 안되어서 화면 변화를 적용하려고
+                // listen으로 해주어도 된다.
+                onChanged: (_) { // 파라미터 사용 안함
+                  setState(() { });
+                },
               ),
             ],
               ),
@@ -75,8 +86,10 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
         padding: submitButtonBoxPadding,
         child: SizedBox(// 하단 버튼 사이즈 조절
           height: submitButtonHeight,
-          child: ElevatedButton(
-            onPressed: () {  },
+          child: ElevatedButton( // onPressed: null은 버튼 disable 효과
+            onPressed: _nameController.text.isEmpty // .text는 항상 값이 있기 때문에 .isEmpty로 확인해주어야 한다.
+              ? null 
+              : _onAddAlarmPage,
             style: ElevatedButton.styleFrom(textStyle: Theme.of(context).textTheme.subtitle1),
             child: const Text('다음'),
             ),
@@ -85,10 +98,25 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
     ),
     );
   }
+
+  void _onAddAlarmPage() { 
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => AddAlarmPage(
+        medicineImage: _medicineImage,
+        medicineName: _nameController.text
+        ),
+      ),
+    );
+  }
 }
 
 class MedicineImageButton extends StatefulWidget {
-  const MedicineImageButton({super.key});
+  const MedicineImageButton({super.key, required this.changeImageFile});
+
+  //안쪽(MedicineImageButton)에서만 사용되는 이미지 파일을 밖에서도 쓸 수 있도록 설정
+  final ValueChanged<File?> changeImageFile;
 
   @override
   State<MedicineImageButton> createState() => _MedicineImageButtonState();
@@ -141,6 +169,8 @@ class _MedicineImageButtonState extends State<MedicineImageButton> {
       // 이미지가 null이 아닐때만 실행하고
       setState(() {
         _pickedImage = File(xfile.path);
+        // _pickedImage이 사용되는 곳에서
+        widget.changeImageFile(_pickedImage);
       });
     }
     //이미지가 있던 없던 시트 끄기
