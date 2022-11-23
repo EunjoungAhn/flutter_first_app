@@ -72,22 +72,12 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
               ],
             ),
       ),
-    bottomNavigationBar: SafeArea(// ios x 이상에서만 동작 하단의 네비게이션 바와 노치를 침범하지 않게 설정
-      child: Padding(
-        // 하단 버튼의 여백 설정
-        padding: submitButtonBoxPadding,
-        child: SizedBox(// 하단 버튼 사이즈 조절
-          height: submitButtonHeight,
-          child: ElevatedButton( // onPressed: null은 버튼 disable 효과
-            onPressed: _nameController.text.isEmpty // .text는 항상 값이 있기 때문에 .isEmpty로 확인해주어야 한다.
-              ? null 
-              : _onAddAlarmPage,
-            style: ElevatedButton.styleFrom(textStyle: Theme.of(context).textTheme.subtitle1),
-            child: const Text('다음'),
-            ),
-        ),
-      ),
-    ),
+    bottomNavigationBar: BottomSubmitButton(
+      onPressed: _nameController.text.isEmpty // .text는 항상 값이 있기 때문에 .isEmpty로 확인해주어야 한다.
+        ? null 
+        : _onAddAlarmPage,
+        text: '다음',
+      )
     );
   }
 
