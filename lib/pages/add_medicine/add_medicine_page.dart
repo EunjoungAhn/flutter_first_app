@@ -32,44 +32,46 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
       appBar: AppBar(
         leading: const CloseButton(),
       ), //AddPageBody 라는 공통 컴포넌트 함수화 처리
-      body: AddPageBody( children: [
-              Text(
-                '어떤 약이에요?',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              const SizedBox(height: largeSpace),
-              Center(
-                child: MedicineImageButton(
-                  changeImageFile: (File? value) {
-                    _medicineImage = value;
+      body: SingleChildScrollView(
+        child: AddPageBody( children: [
+                Text(
+                  '어떤 약이에요?',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                const SizedBox(height: largeSpace),
+                Center(
+                  child: MedicineImageButton(
+                    changeImageFile: (File? value) {
+                      _medicineImage = value;
+                    },
+                  ),
+                ),
+                const SizedBox(height: largeSpace + regularSpace),
+                Text(
+                  '약 이름',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                TextFormField(
+                  controller: _nameController,
+                  maxLength: 20,
+                  keyboardType: TextInputType.text, //키보드 타입 설정, 이메일..등등
+                  textInputAction: TextInputAction.done, // 완료 버튼으로 설정
+                  style: Theme.of(context).textTheme.bodyText1,
+                  decoration: InputDecoration(
+                    hintText: '복용할 약 이름을 기입해주세요.',
+                    hintStyle: Theme.of(context).textTheme.bodyText2,
+                    contentPadding: textFieldContentPadding,
+                    
+                  ),
+                  // 키보드를 눌러서 끄면 비활성화가 처리가 안되어서 화면 변화를 적용하려고
+                  // listen으로 해주어도 된다.
+                  onChanged: (_) { // 파라미터 사용 안함
+                    setState(() { });
                   },
                 ),
-              ),
-              const SizedBox(height: largeSpace + regularSpace),
-              Text(
-                '약 이름',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              TextFormField(
-                controller: _nameController,
-                maxLength: 20,
-                keyboardType: TextInputType.text, //키보드 타입 설정, 이메일..등등
-                textInputAction: TextInputAction.done, // 완료 버튼으로 설정
-                style: Theme.of(context).textTheme.bodyText1,
-                decoration: InputDecoration(
-                  hintText: '복용할 약 이름을 기입해주세요.',
-                  hintStyle: Theme.of(context).textTheme.bodyText2,
-                  contentPadding: textFieldContentPadding,
-                  
-                ),
-                // 키보드를 눌러서 끄면 비활성화가 처리가 안되어서 화면 변화를 적용하려고
-                // listen으로 해주어도 된다.
-                onChanged: (_) { // 파라미터 사용 안함
-                  setState(() { });
-                },
-              ),
-            ],
-          ),
+              ],
+            ),
+      ),
     bottomNavigationBar: SafeArea(// ios x 이상에서만 동작 하단의 네비게이션 바와 노치를 침범하지 않게 설정
       child: Padding(
         // 하단 버튼의 여백 설정

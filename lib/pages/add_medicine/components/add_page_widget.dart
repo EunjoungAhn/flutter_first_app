@@ -14,13 +14,11 @@ final List<Widget> children;
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: SingleChildScrollView( // 키보드가 올라 왔는데 overflowed 된다면, 스크롤 가능한 영역으로 감싸주면 된다.
-          child: Padding(
-            padding: pagePadding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children
-            ),
+        child: Padding(
+          padding: pagePadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children
           ),
         ),
       );

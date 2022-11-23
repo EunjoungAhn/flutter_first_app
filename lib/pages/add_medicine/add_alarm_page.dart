@@ -25,6 +25,9 @@ class AddAlarmPage extends StatelessWidget {
           style: Theme.of(context).textTheme.headline4,
           ),
           const SizedBox(height: largeSpace),
+          Expanded(// Expanded- 컬럼에서 내가 가지고 있는 영역을 다 그릴수 있는 
+            child: ListView(),
+          ),
       ],
     ),
     );
