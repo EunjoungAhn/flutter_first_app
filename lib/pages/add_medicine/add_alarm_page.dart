@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:first_app/components/app_constants.dart';
 import 'package:flutter/material.dart';
+import 'components/add_page_widget.dart';
 
 class AddAlarmPage extends StatelessWidget {
   const AddAlarmPage({
@@ -15,11 +17,16 @@ class AddAlarmPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      appBar: AppBar(),
+      body: AddPageBody(//공통 컴포넌트로 분리
       children: [
-        medicineImage == null? Container() : Image.file(medicineImage!), // Image.file 억지로 출력하면 에러가 나니 !로 null을 받지 않겠다 설정
-        Text(medicineName),
-      ]),
+        Text(
+          '매일 복약 잊지 말아요!',
+          style: Theme.of(context).textTheme.headline4,
+          ),
+          const SizedBox(height: largeSpace),
+      ],
+    ),
     );
   }
 }
