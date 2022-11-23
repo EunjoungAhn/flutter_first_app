@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../components/app_page_route.dart';
+
 class AddMedicinePage  extends StatefulWidget {
   const AddMedicinePage ({super.key});
 
@@ -99,13 +101,13 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
     );
   }
 
-  void _onAddAlarmPage() { 
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => AddAlarmPage(
-        medicineImage: _medicineImage,
-        medicineName: _nameController.text
+void _onAddAlarmPage() { 
+    Navigator.push(
+      context,
+      FadePageRoute( // 기존의 MaterialPageRoute에서 ios와 android 화면 통일을위해 fade 효과로 커스텀
+        page: AddAlarmPage(
+          medicineImage: _medicineImage,
+          medicineName: _nameController.text
         ),
       ),
     );
