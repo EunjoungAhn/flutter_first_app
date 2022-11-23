@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:first_app/components/app_colors.dart';
 import 'package:first_app/components/app_constants.dart';
+import 'package:first_app/components/app_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'components/add_page_widget.dart';
@@ -67,10 +69,58 @@ class AlarmBox extends StatelessWidget {
         child: TextButton(
           style: TextButton.styleFrom(textStyle: Theme.of(context).textTheme.subtitle2),
           onPressed: () {
-          
-        }, child: const Text('18:00')),
-      )
-    ],);
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+              return BottomSheetBody(
+                children: [
+                  SizedBox( // CupertinoDatePicker만 넣으면 에러가 난다.
+                  //그 이유는 height 이 있어야 하기 때문이다.
+                    height: 200,
+                    child: CupertinoDatePicker(
+                      onDateTimeChanged: (dateTime){},
+                      mode: CupertinoDatePickerMode.time,// 시간 선택 설정
+                      ),
+                    ),
+                    const SizedBox(width: regularSpace),
+                    Row(children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: submitButtonHeight,
+                          child: ElevatedButton(onPressed: () {
+                            
+                          }, 
+                          child: const Text('취소'),
+                          style: ElevatedButton.styleFrom(
+                            textStyle: Theme.of(context).textTheme.subtitle1,
+                            backgroundColor: Colors.white,
+                            foregroundColor: AppColors.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: smallSpace),
+                      Expanded(
+                        child: SizedBox(
+                          height: submitButtonHeight,
+                          child: ElevatedButton(onPressed: () {
+                            
+                          },
+                          style: ElevatedButton.styleFrom(textStyle: Theme.of(context).textTheme.subtitle1),
+                          child: const Text('선택'),
+                          ),
+                        ),
+                      ),
+                    ],)
+                  ],
+                );
+              },
+            );
+          },
+          child: const Text('18:00')),
+        )
+      ],
+    );
   }
 }
 
