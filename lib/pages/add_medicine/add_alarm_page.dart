@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../services/app_file_service.dart';
 import 'components/add_page_widget.dart';
 
 class AddAlarmPage extends StatelessWidget {
@@ -57,12 +58,17 @@ class AddAlarmPage extends StatelessWidget {
             title: '$alarm 약 먹을 시간이에요!',
             body: '$medicineName 복약했다고 알려주세요!',
           );
-          
+
           if(!result){
             showPermissionDenied(context, permission: '알람');
           }
         }
+        
         // 2. save image (local dir)
+        String? imageFilePath;
+        if (medicineImage != null) {
+          imageFilePath = await saveImageToLocalDirectory(medicineImage!);
+        }
 
         // 3. add medicine model (local DB, hive)
       },
