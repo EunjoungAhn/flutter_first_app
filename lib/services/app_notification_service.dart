@@ -49,8 +49,8 @@ class AppNotificationService {
     required String title, // HH:mm 약 먹을 시간이예요!
     required String body, // {약이름} 복약했다고 알려주세요!
   }) async {
-    if (!await permissionNotification) {
-      // show native setting page
+    if (!await permissionNotification) { // addNotifcication을 호출하면 permission을 묻는다.
+      // show native setting page - 내가 알람권한이 없으면 설정창으로 가서 알림권한을 추가해줘
       return false;
     }
 
@@ -118,14 +118,16 @@ class AppNotificationService {
 
   Future<bool> get permissionNotification async {
     if (Platform.isAndroid) {
-      return true;
+      return true; // 안드로이드 일때는 있다.
     } else if (Platform.isIOS) {
+      // ios 일때는 아래의 권한이 있는지 묻는다.
       return await notification
               .resolvePlatformSpecificImplementation<
                   IOSFlutterLocalNotificationsPlugin>()
               ?.requestPermissions(alert: true, badge: true, sound: true) ??
           false;
     } else {
+      // 안드로이드 or ios가 아니면 false로 반환
       return false;
     }
   }

@@ -1,9 +1,16 @@
 import 'package:first_app/components/app_themes.dart';
+import 'package:first_app/services/app_notification_service.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/home_page.dart';
 
+final notification = AppNotificationService();
 void main() {
+  WidgetsFlutterBinding.ensureInitialized;
+
+  notification.initializeTimeZone();
+  notification.initializeNotification();
+  
   runApp(const MyApp());
 }
 

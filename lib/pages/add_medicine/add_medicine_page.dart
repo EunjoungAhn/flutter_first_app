@@ -160,6 +160,10 @@ class _MedicineImageButtonState extends State<MedicineImageButton> {
     }
     //이미지가 있던 없던 시트 끄기
     Navigator.maybePop(context);
+    }).onError((error, stackTrace) {
+      // show setting
+      Navigator.pop(context);
+      showPermissionDenied(context, permission: '카메라 및 갤러리 접근');
     });
   }
 }
