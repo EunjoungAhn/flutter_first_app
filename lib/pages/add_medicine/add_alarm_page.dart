@@ -4,6 +4,7 @@ import 'package:first_app/components/app_colors.dart';
 import 'package:first_app/components/app_constants.dart';
 import 'package:first_app/components/app_widgets.dart';
 import 'package:first_app/main.dart';
+import 'package:first_app/models/medicine.dart';
 import 'package:first_app/services/add_medicin_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,7 @@ class AddAlarmPage extends StatelessWidget {
         }
 
         // 3. add medicine model (local DB, hive)
+        final medicine = Medicine(id: 0, name: medicineName, imagePath: imageFilePath, alarms: service.alarms);
       },
       text: '완료',
     ),

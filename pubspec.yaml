@@ -54,6 +54,10 @@ dependencies:
   # file path
   path_provider: ^2.0.11
 
+  # hive
+  hive: ^2.0.5
+  hive_flutter: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -64,6 +68,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+
+  # hive  
+  hive_generator: ^1.1.1
+  build_runner: ^2.1.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
