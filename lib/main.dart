@@ -1,16 +1,21 @@
 import 'package:first_app/components/app_themes.dart';
+import 'package:first_app/repositories/app_hive.dart';
 import 'package:first_app/services/app_notification_service.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/home_page.dart';
 
 final notification = AppNotificationService();
-void main() {
+final hive = AppHive();
+void main() async {
   WidgetsFlutterBinding.ensureInitialized;
 
-  notification.initializeTimeZone();
-  notification.initializeNotification();
-  
+  await notification.initializeTimeZone();
+  await notification.initializeNotification();
+
+  // openBox가 되지 않고 앱이 실행하면 에러가 발생함으로 awit 추가
+  await hive.initializeHive();
+  //runApp이 되기전에 꼭 hive를 초기화 하고 앱 실행
   runApp(const MyApp());
 }
 
