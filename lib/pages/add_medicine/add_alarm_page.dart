@@ -54,14 +54,14 @@ class AddAlarmPage extends StatelessWidget {
         // 1. add alarm
         for(var alarm in service.alarms){
           result = await notification.addNotifcication(
-            medicineId: 0,
+            medicineId: medicineRepository.newId,
             alarmTimeStr: alarm,
             title: '$alarm 약 먹을 시간이에요!',
             body: '$medicineName 복약했다고 알려주세요!',
           );
 
           if(!result){
-            showPermissionDenied(context, permission: '알람');
+            return showPermissionDenied(context, permission: '알람');
           }
         }
         
@@ -72,7 +72,16 @@ class AddAlarmPage extends StatelessWidget {
         }
 
         // 3. add medicine model (local DB, hive)
-        final medicine = Medicine(id: 0, name: medicineName, imagePath: imageFilePath, alarms: service.alarms);
+        final medicine = Medicine(
+          id: medicineRepository.newId, 
+          name: medicineName, 
+          imagePath: imageFilePath, 
+          alarms: service.alarms.toList(),
+        );
+        medicineRepository.addMedicine(medicine);
+
+        // ignore: use_build_context_synchronously
+        Navigator.popUntil(context, (route) => route.isFirst); // 지금까지 쌓인 레이아웃을 벗어나 가장 첫 화면으로 나가고 싶을때 popUntil 사용
       },
       text: '완료',
     ),

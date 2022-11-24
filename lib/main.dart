@@ -1,5 +1,6 @@
 import 'package:first_app/components/app_themes.dart';
 import 'package:first_app/repositories/app_hive.dart';
+import 'package:first_app/repositories/medicine_repository.dart';
 import 'package:first_app/services/app_notification_service.dart';
 import 'package:flutter/material.dart';
 
@@ -7,11 +8,12 @@ import 'pages/home_page.dart';
 
 final notification = AppNotificationService();
 final hive = AppHive();
+final medicineRepository = MedicineRepository();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized;
 
-  await notification.initializeTimeZone();
-  await notification.initializeNotification();
+  notification.initializeTimeZone();
+  notification.initializeNotification();
 
   // openBox가 되지 않고 앱이 실행하면 에러가 발생함으로 awit 추가
   await hive.initializeHive();

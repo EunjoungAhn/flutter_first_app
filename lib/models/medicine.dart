@@ -21,6 +21,10 @@ class Medicine { // @HiveType(typeId: 1) 는 1부터 시작
   final String? imagePath;
 
   @HiveField(3)
-  final Set<String> alarms;
+  final List<String> alarms;
 
+  @override
+  String toString() {
+    return '{id: $id, name: $name, imagePath: $imagePath, alarms: $alarms}';
+  }
 }
