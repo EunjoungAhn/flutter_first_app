@@ -1,13 +1,26 @@
-class Medicine {
-  Medicine({
-   required this.id,
-   required this.name, 
-   required this.imagePath,
-   required this.alarms
+import 'package:hive/hive.dart';
+
+part 'medicine.g.dart';
+
+@HiveType(typeId: 1)
+class Medicine { // @HiveType(typeId: 1) 는 1부터 시작
+  Medicine({     
+    required this.id,
+    required this.name, 
+    required this.imagePath,
+    required this.alarms
   });
 
- final int id; // unique
- final String name;
- final String? imagePath;
- final Set<String> alarms;
+  @HiveField(0) // @HiveField(0) 는 0부터 시작
+  final int id; // unique
+
+  @HiveField(1)
+  final String name;
+
+  @HiveField(2)
+  final String? imagePath;
+
+  @HiveField(3)
+  final Set<String> alarms;
+
 }
