@@ -27,13 +27,21 @@ class TodayPage extends StatelessWidget {
         const SizedBox(height: regularSpace),
         const Divider(height: 1, thickness: 2.0,),
         Expanded(
-          child: ListView.builder(
+          child: ListView.separated(
+            padding: const EdgeInsets.symmetric(vertical: smallSpace),
             itemCount: list.length,
             itemBuilder: (context, index) {
             return MedicineListTile(
               name: list[index],
             );
-          }),
+          },// itemBuilder를 그려주고 어떤 위젯을 다음에 그려줄지 
+          // 정해줄때 사용가능 
+          separatorBuilder: (context, index) {
+            return const Divider(
+              height: regularSpace,
+            );
+          },
+          ),
         ),
       ],
     );
@@ -51,7 +59,6 @@ class MedicineListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText2;
     return Container(
-      color: Colors.yellow,
       child: Row(
         children: [
         CupertinoButton(
