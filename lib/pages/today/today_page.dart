@@ -17,8 +17,10 @@ class TodayPage extends StatelessWidget {
         // 제목 아래 스크롤 가능한 영역 만들기 위해 공간 넣기
         const SizedBox(height: regularSpace),
         Expanded(child: ListView(
-          children: [
-            MedicineListTile()
+          children: const [
+            MedicineListTile(name: '약 이름',),
+            MedicineListTile(name: '약 이름 테스트 ',),
+            MedicineListTile(name: '약 이름 테스트약 이름 테스트약',),
           ],
         )),
     ],);
@@ -27,8 +29,10 @@ class TodayPage extends StatelessWidget {
 
 class MedicineListTile extends StatelessWidget {
   const MedicineListTile({
-    Key? key,
+    Key? key, required this.name,
   }) : super(key: key);
+
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -47,26 +51,32 @@ class MedicineListTile extends StatelessWidget {
           ),
         ),
         const SizedBox(width: smallSpace,),
+        const Divider( // 영역 구분감을 주기위해 추가
+          height: 1,
+          thickness: 2.0,
+        ),
         Expanded(
-          child: Container(
-            color: Colors.white,
-            // 2개의 열 디자인을 위해 column
-            child: Column(
-              children: [
-                Text(
-                  '22:44',
-                  style: textStyle,
-                  ),
-                  // 3가지의 텍스트 구분으로 나누기위해 row
-                  Row(children: [
-                    Text('약 이름,', style: textStyle),
-                    TileActionButton(onTap: () {}, title: '지금',),
-                    Text('|', style: textStyle),
-                    TileActionButton(onTap: () {}, title: '아까',),
-                    Text('먹었어요!,', style: textStyle),
-                  ],)
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '22:44',
+                style: textStyle,
+                ),
+                const SizedBox(height: 6,),// 다음 줄 구분감을 주기 위해 높이 지정
+                Wrap(
+                // 3가지의 텍스트 구분으로 나누기위해 row -> 영역이 넘쳐서 에러를 
+                // Wrap으로 감싸서 다음줄로 이동
+                crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [ 
+                  Text('$name,', style: textStyle),
+                  TileActionButton(onTap: () {}, title: '지금',),
+                  Text('|', style: textStyle),
+                  TileActionButton(onTap: () {}, title: '아까',),
+                  Text('먹었어요!,', style: textStyle),
+                ],
+              )
+            ],
           ),
         ),
         CupertinoButton(
