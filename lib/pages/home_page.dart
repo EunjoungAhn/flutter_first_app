@@ -23,29 +23,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: SafeArea(
-        top: false, // 상단 네비게이션 바 색 설정
-        child: Scaffold(
-          appBar: AppBar(),
-          body: _pages[_currentIndex],
-          // 가운데 + 버튼 
-          floatingActionButton: FloatingActionButton(
-            onPressed: _onAddMedicien,
-            child: const Icon(CupertinoIcons.add),
-          ),
-          floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: _buildBottomAppBar(),
-        ),
+    return Scaffold(
+      body: SafeArea(child: _pages[_currentIndex]),
+      // 가운데 + 버튼 
+      floatingActionButton: FloatingActionButton(
+        onPressed: _onAddMedicien,
+        child: const Icon(CupertinoIcons.add),
       ),
+      floatingActionButtonLocation:
+        FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: _buildBottomAppBar(),
     );
   }
 
   BottomAppBar _buildBottomAppBar() {
     return BottomAppBar(
-          elevation: 0, //바텀 네이게이션 그림자 설정
+          //elevation: 0, //바텀 네이게이션 그림자 설정
           child: Container(
             height: kBottomNavigationBarHeight, //material 자체에서 네비게이션 높이를 지정해준 것
             color: Colors.white,
