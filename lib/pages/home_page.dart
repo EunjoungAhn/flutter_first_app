@@ -1,4 +1,5 @@
 import 'package:first_app/components/app_colors.dart';
+import 'package:first_app/components/app_constants.dart';
 import 'package:first_app/pages/add_medicine/add_medicine_page.dart';
 import 'package:first_app/pages/history/history_page.dart';
 import 'package:first_app/pages/today/today_page.dart';
@@ -24,7 +25,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: _pages[_currentIndex]),
+      body: Padding(
+        padding: pagePadding,
+        child: SafeArea(child: _pages[_currentIndex]),
+      ),
       // 가운데 + 버튼 
       floatingActionButton: FloatingActionButton(
         onPressed: _onAddMedicien,
