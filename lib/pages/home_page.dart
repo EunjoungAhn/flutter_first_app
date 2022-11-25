@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final _pages = [
     // Container(color: Colors.blue), // 임시 페이지 이동시 만든 컨테이너
-    const TodayPage(),
+    TodayPage(),
     const HistoryPage(),
   ];
 

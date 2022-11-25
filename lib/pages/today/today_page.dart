@@ -3,7 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TodayPage extends StatelessWidget {
-  const TodayPage({super.key});
+  TodayPage({super.key});
+
+  final list = [
+    '약',
+    '약 이름',
+    '약 이름 테스트',
+    '약 이름 테스트 이름 테스트',
+    '약 이름 테스트 이름 테스트',
+    '약 이름 테스트 이름 테스트',
+];
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +25,18 @@ class TodayPage extends StatelessWidget {
         ),
         // 제목 아래 스크롤 가능한 영역 만들기 위해 공간 넣기
         const SizedBox(height: regularSpace),
-        Expanded(child: ListView(
-          children: const [
-            MedicineListTile(name: '약 이름',),
-            MedicineListTile(name: '약 이름 테스트 ',),
-            MedicineListTile(name: '약 이름 테스트약 이름 테스트약',),
-          ],
-        )),
-    ],);
+        const Divider(height: 1, thickness: 2.0,),
+        Expanded(
+          child: ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+            return MedicineListTile(
+              name: list[index],
+            );
+          }),
+        ),
+      ],
+    );
   }
 }
 
