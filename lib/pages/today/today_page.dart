@@ -1,18 +1,17 @@
+//패키지에서 접근
+import 'dart:io';
+
 import 'package:first_app/components/app_constants.dart';
+import 'package:first_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+//내 파일 안에서 접근하는
+import '../../models/medicine.dart';
+import '../../models/medicine_alarm.dart';
 
 class TodayPage extends StatelessWidget {
-  TodayPage({super.key});
-
-  final list = [
-    '약',
-    '약 이름',
-    '약 이름 테스트',
-    '약 이름 테스트 이름 테스트',
-    '약 이름 테스트 이름 테스트',
-    '약 이름 테스트 이름 테스트',
-];
+  const TodayPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,33 +26,56 @@ class TodayPage extends StatelessWidget {
         const SizedBox(height: regularSpace),
         const Divider(height: 1, thickness: 2.0,),
         Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: smallSpace),
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-            return MedicineListTile(
-              name: list[index],
-            );
-          },// itemBuilder를 그려주고 어떤 위젯을 다음에 그려줄지 
-          // 정해줄때 사용가능 
-          separatorBuilder: (context, index) {
-            return const Divider(
-              height: regularSpace,
-            );
-          },
+          child: ValueListenableBuilder(
+            valueListenable: medicineRepository.medicineBox.listenable(),
+            builder: _bilderMedicineListView, 
           ),
         ),
       ],
+    );
+  }
+
+  Widget _bilderMedicineListView(context, Box<Medicine> box, _) {
+    final medicines = box.values.toList();
+    //medicine list
+    final medicineAlarms = <MedicineAlarm>[];
+
+    for(var medicine in medicines){
+      for(var alarm in medicine.alarms){
+        medicineAlarms.add(MedicineAlarm(
+          medicine.id, 
+          medicine.name,
+          medicine.imagePath,
+          alarm,
+        ));
+      }
+    }
+
+
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(vertical: smallSpace),
+      itemCount: medicineAlarms.length,
+      itemBuilder: (context, index) {
+      return MedicineListTile(
+        medicineAlarm: medicineAlarms[index],
+      );
+    },// itemBuilder를 그려주고 어떤 위젯을 다음에 그려줄지 
+    // 정해줄때 사용가능 
+    separatorBuilder: (context, index) {
+      return const Divider(
+        height: regularSpace,
+      );
+    },
     );
   }
 }
 
 class MedicineListTile extends StatelessWidget {
   const MedicineListTile({
-    Key? key, required this.name,
+    Key? key, required this.medicineAlarm,
   }) : super(key: key);
 
-  final String name;
+  final MedicineAlarm medicineAlarm;
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +88,11 @@ class MedicineListTile extends StatelessWidget {
           onPressed: () {
             
           },
-          child: const CircleAvatar(
+          child: CircleAvatar(
             radius: 40,
+            foregroundImage: medicineAlarm.imagePath == null ?
+            null 
+            : FileImage(File(medicineAlarm.imagePath!)),
           ),
         ),
         const SizedBox(width: smallSpace,),
@@ -80,7 +105,7 @@ class MedicineListTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '22:44',
+                '${medicineAlarm.alarmTime}',
                 style: textStyle,
                 ),
                 const SizedBox(height: 6,),// 다음 줄 구분감을 주기 위해 높이 지정
@@ -89,7 +114,7 @@ class MedicineListTile extends StatelessWidget {
                 // Wrap으로 감싸서 다음줄로 이동
                 crossAxisAlignment: WrapCrossAlignment.center,
                   children: [ 
-                  Text('$name,', style: textStyle),
+                  Text('${medicineAlarm.name},', style: textStyle),
                   TileActionButton(onTap: () {}, title: '지금',),
                   Text('|', style: textStyle),
                   TileActionButton(onTap: () {}, title: '아까',),
