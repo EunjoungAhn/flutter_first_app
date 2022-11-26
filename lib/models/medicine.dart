@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 part 'medicine.g.dart';
 
 @HiveType(typeId: 1)
-class Medicine { // @HiveType(typeId: 1) 는 1부터 시작
+class Medicine extends HiveObject{ // @HiveType(typeId: 1) 는 1부터 시작
   Medicine({     
     required this.id,
     required this.name, 

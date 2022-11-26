@@ -47,6 +47,7 @@ class TodayPage extends StatelessWidget {
           medicine.name,
           medicine.imagePath,
           alarm,
+          medicine.key,// model class인 Medicine extends HiveObject를 해야 key 값을 가져온다.
         ));
       }
     }
@@ -126,7 +127,7 @@ class MedicineListTile extends StatelessWidget {
         ),
         CupertinoButton(
           onPressed: () {
-            
+            medicineRepository.deleteMedicine(medicineAlarm.key);
           },
           child: const Icon(CupertinoIcons.ellipsis_vertical),
           ),
