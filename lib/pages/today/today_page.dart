@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:first_app/components/app_constants.dart';
+import 'package:first_app/components/app_page_route.dart';
 import 'package:first_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -82,12 +83,22 @@ class MedicineListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText2;
     return Container(
+
       child: Row(
         children: [
         CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () {
-            
+            Navigator.push(context,
+            FadePageRoute(page: Scaffold(
+              appBar: AppBar(
+                leading: const CloseButton(),
+              ),
+              body: Center(
+                child: Image.file(File(medicineAlarm.imagePath!),
+                ),
+              ),
+              )));
           },
           child: CircleAvatar(
             radius: 40,
@@ -133,6 +144,7 @@ class MedicineListTile extends StatelessWidget {
           ),
         ],
       ),
+
     );
   }
 }
