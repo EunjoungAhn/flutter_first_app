@@ -88,17 +88,12 @@ class MedicineListTile extends StatelessWidget {
         children: [
         CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: () {
+          // 이미지 경로가 null 이면 사진이 안 띄도록 처리
+          onPressed: medicineAlarm.imagePath == null
+          ? null
+          : () {
             Navigator.push(context,
-            FadePageRoute(page: Scaffold(
-              appBar: AppBar(
-                leading: const CloseButton(),
-              ),
-              body: Center(
-                child: Image.file(File(medicineAlarm.imagePath!),
-                ),
-              ),
-              )));
+            FadePageRoute(page: ImageDetailPage(medicineAlarm: medicineAlarm)));
           },
           child: CircleAvatar(
             radius: 40,
@@ -146,6 +141,28 @@ class MedicineListTile extends StatelessWidget {
       ),
 
     );
+  }
+}
+
+class ImageDetailPage extends StatelessWidget {
+  const ImageDetailPage({
+    Key? key,
+    required this.medicineAlarm,
+  }) : super(key: key);
+
+  final MedicineAlarm medicineAlarm;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: const CloseButton(),
+      ),
+      body: Center(
+        child: Image.file(File(medicineAlarm.imagePath!),
+        ),
+      ),
+      );
   }
 }
 
