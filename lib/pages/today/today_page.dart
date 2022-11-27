@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:first_app/components/app_constants.dart';
 import 'package:first_app/components/app_page_route.dart';
 import 'package:first_app/main.dart';
+import 'package:first_app/pages/today/today_empty_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -25,7 +26,7 @@ class TodayPage extends StatelessWidget {
         ),
         // 제목 아래 스크롤 가능한 영역 만들기 위해 공간 넣기
         const SizedBox(height: regularSpace),
-        const Divider(height: 1, thickness: 2.0,),
+        
         Expanded(
           child: ValueListenableBuilder(
             valueListenable: medicineRepository.medicineBox.listenable(),
@@ -41,6 +42,11 @@ class TodayPage extends StatelessWidget {
     //medicine list
     final medicineAlarms = <MedicineAlarm>[];
 
+    // 빈화면일때 뷰 처리
+    if(medicines.isEmpty){
+      return TodayEmpty();
+    }
+
     for(var medicine in medicines){
       for(var alarm in medicine.alarms){
         medicineAlarms.add(MedicineAlarm(
@@ -54,20 +60,28 @@ class TodayPage extends StatelessWidget {
     }
 
 
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(vertical: smallSpace),
-      itemCount: medicineAlarms.length,
-      itemBuilder: (context, index) {
-      return MedicineListTile(
-        medicineAlarm: medicineAlarms[index],
-      );
-    },// itemBuilder를 그려주고 어떤 위젯을 다음에 그려줄지 
-    // 정해줄때 사용가능 
-    separatorBuilder: (context, index) {
-      return const Divider(
-        height: regularSpace,
-      );
-    },
+    return Column(
+      children: [
+        const Divider(height: 1, thickness: 1.0,),
+        Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.symmetric(vertical: smallSpace),
+            itemCount: medicineAlarms.length,
+            itemBuilder: (context, index) {
+            return MedicineListTile(
+              medicineAlarm: medicineAlarms[index],
+            );
+          },// itemBuilder를 그려주고 어떤 위젯을 다음에 그려줄지 
+          // 정해줄때 사용가능 
+          separatorBuilder: (context, index) {
+            return const Divider(
+              height: regularSpace,
+            );
+          },
+          ),
+        ),
+        const Divider(height: 1, thickness: 1.0,),
+      ],
     );
   }
 }
