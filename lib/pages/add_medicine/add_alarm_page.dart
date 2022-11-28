@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../services/app_file_service.dart';
+import '../bottomsheet/time_setting_bottomsheet.dart';
 import 'components/add_page_widget.dart';
 
 class AddAlarmPage extends StatelessWidget {
@@ -135,12 +136,17 @@ class AlarmBox extends StatelessWidget {
             showModalBottomSheet(
               context: context,
               builder: (context) {
-              return TimePickerBottomSheet(
+              return TimeSettingBottomSheet(
                 initialTime: time,
-                service: service,
                 );
               },
-            );
+            ).then((value) {
+            if(value == null || value is! DateTime) return;
+              service.setAlarm(
+                prevTime: time,
+                setTime: value,
+              );
+            });
           },
           child: Text(time)),
         )

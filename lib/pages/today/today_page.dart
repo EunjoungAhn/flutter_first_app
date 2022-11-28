@@ -140,7 +140,7 @@ class MedicineListTile extends StatelessWidget {
                   Text('|', style: textStyle),
                   TileActionButton(
                     onTap: () {
-                      showModalBottomSheet(context: context, builder: (context) => ,)
+                      // showModalBottomSheet(context: context, builder: (context) => ,)
                     }, 
                     title: '아까',
                     ),

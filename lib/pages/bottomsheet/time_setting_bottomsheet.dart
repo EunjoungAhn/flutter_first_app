@@ -7,11 +7,10 @@ import '../../components/app_constants.dart';
 import '../../components/app_widgets.dart';
 
 // ignore: must_be_immutable
-class TimePickerBottomSheet extends StatelessWidget {
-  TimePickerBottomSheet({
+class TimeSettingBottomSheet extends StatelessWidget {
+  const TimeSettingBottomSheet({
     Key? key, 
     required this.initialTime, 
-    // required this.service,
   }) : super(key: key);
 
   final String initialTime;
@@ -22,7 +21,7 @@ class TimePickerBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     // 반환할 시간 값을 다시 DateTime으로 바꾸어 주기
     final initialDateTime = DateFormat('HH:mm').parse(initialTime);
-  DateTime? setDateTime; // final이 아닌 내부에서 값이 변경될 수 있어서.
+  DateTime setDateTime = initialDateTime; // final이 아닌 내부에서 값이 변경될 수 있어서.
 
     return BottomSheetBody(
       children: [
@@ -45,7 +44,7 @@ class TimePickerBottomSheet extends StatelessWidget {
                 height: submitButtonHeight,
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context), 
-                  child: const Text('취소'),
+                  child: Text('취소'),
                 style: ElevatedButton.styleFrom(
                   textStyle: Theme.of(context).textTheme.subtitle1,
                   backgroundColor: Colors.white,
@@ -62,13 +61,7 @@ class TimePickerBottomSheet extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.subtitle1,
                   ),
-                  onPressed: () {
-                  // service.setAlarm(
-                  //   prevTime: initialTime,
-                  //   setTime: setDateTime ?? initialDateTime,
-                  //);
-                  Navigator.pop(context);
-                },
+                  onPressed: () => Navigator.pop(context, setDateTime),
                 child: const Text('선택'),
                 ),
               ),
