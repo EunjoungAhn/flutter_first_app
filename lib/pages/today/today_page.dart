@@ -138,7 +138,12 @@ class MedicineListTile extends StatelessWidget {
                   Text('${medicineAlarm.name},', style: textStyle),
                   TileActionButton(onTap: () {}, title: '지금',),
                   Text('|', style: textStyle),
-                  TileActionButton(onTap: () {}, title: '아까',),
+                  TileActionButton(
+                    onTap: () {
+                      showModalBottomSheet(context: context, builder: (context) => ,)
+                    }, 
+                    title: '아까',
+                    ),
                   Text('먹었어요!,', style: textStyle),
                 ],
               )
