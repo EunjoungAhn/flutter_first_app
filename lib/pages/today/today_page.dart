@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:first_app/components/app_constants.dart';
 import 'package:first_app/components/app_page_route.dart';
 import 'package:first_app/main.dart';
+import 'package:first_app/pages/bottomsheet/time_setting_bottomsheet.dart';
 import 'package:first_app/pages/today/today_empty_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +141,14 @@ class MedicineListTile extends StatelessWidget {
                   Text('|', style: textStyle),
                   TileActionButton(
                     onTap: () {
-                      // showModalBottomSheet(context: context, builder: (context) => ,)
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => 
+                        TimeSettingBottomSheet(initialTime: medicineAlarm.alarmTime,
+                        ),
+                      ).then((value) {
+                        print(value);
+                      });
                     }, 
                     title: '아까',
                     ),
