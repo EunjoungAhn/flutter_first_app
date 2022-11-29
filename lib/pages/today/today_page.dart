@@ -12,6 +12,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 //내 파일 안에서 접근하는
 import '../../models/medicine.dart';
 import '../../models/medicine_alarm.dart';
+import '../../models/medicine_history.dart';
 
 class TodayPage extends StatelessWidget {
   const TodayPage({super.key});
@@ -97,76 +98,81 @@ class MedicineListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText2;
-    return Container(
-
-      child: Row(
-        children: [
-        CupertinoButton(
-          padding: EdgeInsets.zero,
-          // 이미지 경로가 null 이면 사진이 안 띄도록 처리
-          onPressed: medicineAlarm.imagePath == null
-          ? null
-          : () {
-            Navigator.push(context,
-            FadePageRoute(page: ImageDetailPage(medicineAlarm: medicineAlarm)));
-          },
-          child: CircleAvatar(
-            radius: 40,
-            foregroundImage: medicineAlarm.imagePath == null ?
-            null 
-            : FileImage(File(medicineAlarm.imagePath!)),
-          ),
+    return Row(
+      children: [
+      CupertinoButton(
+        padding: EdgeInsets.zero,
+        // 이미지 경로가 null 이면 사진이 안 띄도록 처리
+        onPressed: medicineAlarm.imagePath == null
+        ? null
+        : () {
+          Navigator.push(context,
+          FadePageRoute(page: ImageDetailPage(medicineAlarm: medicineAlarm)));
+        },
+        child: CircleAvatar(
+          radius: 40,
+          foregroundImage: medicineAlarm.imagePath == null ?
+          null 
+          : FileImage(File(medicineAlarm.imagePath!)),
         ),
-        const SizedBox(width: smallSpace,),
-        const Divider( // 영역 구분감을 주기위해 추가
-          height: 1,
-          thickness: 2.0,
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '${medicineAlarm.alarmTime}',
-                style: textStyle,
-                ),
-                const SizedBox(height: 6,),// 다음 줄 구분감을 주기 위해 높이 지정
-                Wrap(
-                // 3가지의 텍스트 구분으로 나누기위해 row -> 영역이 넘쳐서 에러를 
-                // Wrap으로 감싸서 다음줄로 이동
-                crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [ 
-                  Text('${medicineAlarm.name},', style: textStyle),
-                  TileActionButton(onTap: () {}, title: '지금',),
-                  Text('|', style: textStyle),
-                  TileActionButton(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => 
-                        TimeSettingBottomSheet(initialTime: medicineAlarm.alarmTime,
-                        ),
-                      ).then((value) {
-                        print(value);
-                      });
-                    }, 
-                    title: '아까',
-                    ),
-                  Text('먹었어요!,', style: textStyle),
-                ],
-              )
-            ],
-          ),
-        ),
-        CupertinoButton(
-          onPressed: () {
-            medicineRepository.deleteMedicine(medicineAlarm.key);
-          },
-          child: const Icon(CupertinoIcons.ellipsis_vertical),
-          ),
-        ],
       ),
+      const SizedBox(width: smallSpace,),
+      const Divider( // 영역 구분감을 주기위해 추가
+        height: 1,
+        thickness: 2.0,
+      ),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              medicineAlarm.alarmTime,
+              style: textStyle,
+              ),
+              const SizedBox(height: 6,),// 다음 줄 구분감을 주기 위해 높이 지정
+              Wrap(
+              // 3가지의 텍스트 구분으로 나누기위해 row -> 영역이 넘쳐서 에러를 
+              // Wrap으로 감싸서 다음줄로 이동
+              crossAxisAlignment: WrapCrossAlignment.center,
+                children: [ 
+                Text('${medicineAlarm.name},', style: textStyle),
+                TileActionButton(onTap: () {}, title: '지금',),
+                Text('|', style: textStyle),
+                TileActionButton(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => 
+                      TimeSettingBottomSheet(initialTime: medicineAlarm.alarmTime,
+                      ),
+                    ).then((takeDateTime) {
+                      // takeDateTime이 null 값이 던가 아님, DateTime이 아니면 다음 코드를 수행하지 않는다.
+                      if(takeDateTime == null || takeDateTime is! DateTime){
+                        return;
+                      }
 
+                      historyRepository.addHistory(MedicineHistory(
+                        medicinedId: medicineAlarm.id,
+                      alarmTime: medicineAlarm.alarmTime, 
+                      takeTime: takeDateTime,
+                      ));
+                    });
+                  }, 
+                  title: '아까',
+                  ),
+                Text('먹었어요!,', style: textStyle),
+              ],
+            )
+          ],
+        ),
+      ),
+      CupertinoButton(
+        onPressed: () {
+          medicineRepository.deleteMedicine(medicineAlarm.key);
+        },
+        child: const Icon(CupertinoIcons.ellipsis_vertical),
+        ),
+      ],
     );
   }
 }

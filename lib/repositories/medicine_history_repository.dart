@@ -1,8 +1,9 @@
 import 'dart:developer';
 
-import '../models/medicine_history.dart';
 import 'package:first_app/repositories/app_hive.dart';
 import 'package:hive/hive.dart';
+
+import 'package:first_app/models/medicine_history.dart';
 
 
 class MedicineHistoryRepository {
@@ -13,10 +14,10 @@ class MedicineHistoryRepository {
     return _historyBox!; // null이 절대
   }
 
-  void addHistory(MedicineHistory medicine) async {
-    int key = await historyBox.add(medicine);
+  void addHistory(MedicineHistory history) async {
+    int key = await historyBox.add(history);
 
-    log('[addHistory] add (key:$key) $medicine');
+    log('[addHistory] add (key:$key) $history');
     log('result ${historyBox.values.toList()}');
   }
 
@@ -29,11 +30,11 @@ class MedicineHistoryRepository {
 
   void updateHistory({
     required int key,
-    required MedicineHistory medicine,
+    required MedicineHistory history,
   }) async {
-    await historyBox.put(key, medicine);
+    await historyBox.put(key, history);
 
-    log('[updateHistory] update (key:$key) $medicine');
+    log('[updateHistory] update (key:$key) $history');
     log('result ${historyBox.values.toList()}');
   }
 
