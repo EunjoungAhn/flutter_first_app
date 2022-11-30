@@ -71,7 +71,7 @@ class TodayPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: smallSpace),
             itemCount: medicineAlarms.length,
             itemBuilder: (context, index) {
-            return BeforeTakeTile(
+            return AfterTakeTile(
               medicineAlarm: medicineAlarms[index],
             );
           },// itemBuilder를 그려주고 어떤 위젯을 다음에 그려줄지 
@@ -88,4 +88,3 @@ class TodayPage extends StatelessWidget {
     );
   }
 }
-
