@@ -1,15 +1,15 @@
 import 'dart:io';
 
+import '../../components/app_constants.dart';
+import '../../components/app_page_route.dart';
+import '../../models/medicine_alarm.dart';
+import '../../models/medicine_history.dart';
+import '../bottomsheet/time_setting_bottomsheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../components/app_constants.dart';
-import '../../components/app_page_route.dart';
 import '../../main.dart';
-import '../../models/medicine_alarm.dart';
-import '../../models/medicine_history.dart';
-import '../bottomsheet/time_setting_bottomsheet.dart';
 import 'image_detail_page.dart';
 
 class BeforeTakeTile extends StatelessWidget {
@@ -55,7 +55,7 @@ class BeforeTakeTile extends StatelessWidget {
               children: [ 
               Text('${medicineAlarm.name},', style: textStyle),
               TileActionButton(
-                  onTap: () {
+                  onTap: () { // 현재 시작으로 저장되면서 이미지가 쌓이는 처리
                     historyRepository.addHistory(MedicineHistory(
                       medicinedId: medicineAlarm.id,
                     alarmTime: medicineAlarm.alarmTime, 
@@ -152,9 +152,8 @@ class AfterTakeTile extends StatelessWidget {
                 text: '${medicineAlarm.alarmTime} -> ',
                 style: textStyle,
                 children: [
-                  TextSpan(
-                    text: // string 타입을 DateTime으로 바꾸기
-                          DateFormat('HH:mm').format(history.takeTime),
+                  TextSpan( // string 타입을 DateTime으로 바꾸기
+                    text: DateFormat('HH:mm').format(history.takeTime),
                     style: textStyle?.copyWith(fontWeight: FontWeight.w500)
                   ),
                 ],         
@@ -179,6 +178,7 @@ class AfterTakeTile extends StatelessWidget {
 
   String get takeTimeStr => DateFormat('HH시 mm분에').format(history.takeTime);
 
+// StatelessWidget여서 BuildContext를 받아와서 사용한다. Statefull 위젯은 매개변수로 받아와서 사용해도 된다.
   void _onTap(BuildContext context) {
     showModalBottomSheet(
       context: context,

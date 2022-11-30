@@ -110,7 +110,7 @@ Widget _buildListTile(MedicineAlarm medicineAlarm){
         ),
       );
 
-      if(todayTakeHistory.medicinedId == 1 && 
+      if(todayTakeHistory.medicinedId == -1 && 
       todayTakeHistory.alarmTime == ''){
         return BeforeTakeTile(
           medicineAlarm: medicineAlarm
@@ -121,7 +121,7 @@ Widget _buildListTile(MedicineAlarm medicineAlarm){
         medicineAlarm: medicineAlarm,
         history: todayTakeHistory,
       );
-    }
+    },
   );
 }
 
