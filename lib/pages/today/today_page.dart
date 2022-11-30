@@ -119,6 +119,7 @@ Widget _buildListTile(MedicineAlarm medicineAlarm){
 
       return AfterTakeTile(
         medicineAlarm: medicineAlarm,
+        history: todayTakeHistory,
       );
     }
   );
