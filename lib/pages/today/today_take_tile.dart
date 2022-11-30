@@ -97,7 +97,19 @@ class AfterTakeTile extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme.bodyText2;
     return Row(
       children: [
-      _MedicineImageButton(medicineAlarm: medicineAlarm),
+      Stack( // 이미지를 겹겹히 쌓는 것
+        children: [
+          _MedicineImageButton(medicineAlarm: medicineAlarm),
+          CircleAvatar(
+            radius: 40,
+            backgroundColor: Colors.green.withOpacity(0.7),
+            child: const Icon(
+              CupertinoIcons.check_mark,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
       const SizedBox(width: smallSpace,),
       const Divider( // 영역 구분감을 주기위해 추가
         height: 1,
@@ -136,31 +148,11 @@ class AfterTakeTile extends StatelessWidget {
             crossAxisAlignment: WrapCrossAlignment.center,
               children: [ 
               Text('${medicineAlarm.name},', style: textStyle),
-              TileActionButton(onTap: () {}, title: '지금',),
-              Text('|', style: textStyle),
               TileActionButton(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) => 
-                    TimeSettingBottomSheet(initialTime: medicineAlarm.alarmTime,
-                    ),
-                  ).then((takeDateTime) {
-                    // takeDateTime이 null 값이 던가 아님, DateTime이 아니면 다음 코드를 수행하지 않는다.
-                    if(takeDateTime == null || takeDateTime is! DateTime){
-                      return;
-                    }
-
-                    historyRepository.addHistory(MedicineHistory(
-                      medicinedId: medicineAlarm.id,
-                    alarmTime: medicineAlarm.alarmTime, 
-                    takeTime: takeDateTime,
-                    ));
-                  });
-                }, 
-                title: '아까',
-                ),
-              Text('먹었어요!,', style: textStyle),
+                onTap: () {},
+                title: '20시 19분에',
+              ),
+              Text('먹었어요!', style: textStyle),
             ],
           )
         ];
