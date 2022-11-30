@@ -11,9 +11,13 @@ class TimeSettingBottomSheet extends StatelessWidget {
   const TimeSettingBottomSheet({
     Key? key, 
     required this.initialTime, 
+    this.submitTitle = '선택',
+    this.bottomWidget, 
   }) : super(key: key);
 
   final String initialTime;
+  final Widget? bottomWidget;
+  final String submitTitle;
   // final AddMedicineService service;
   // must_be_immutable 처리
 
@@ -39,7 +43,10 @@ class TimeSettingBottomSheet extends StatelessWidget {
             initialDateTime: initialDateTime,
             ),
           ),
-          const SizedBox(width: regularSpace),
+          const SizedBox(width: smallSpace),
+          //bottomWidget 이 null이 아니면 위젯을 그릴꺼다
+          if(bottomWidget != null) bottomWidget!,
+          const SizedBox(width: smallSpace),
           Row(children: [
             Expanded(
               child: SizedBox(
@@ -64,7 +71,7 @@ class TimeSettingBottomSheet extends StatelessWidget {
                     textStyle: Theme.of(context).textTheme.subtitle1,
                   ),
                   onPressed: () => Navigator.pop(context, setDateTime),
-                child: const Text('선택'),
+                child: Text(submitTitle),
                 ),
               ),
             ),
