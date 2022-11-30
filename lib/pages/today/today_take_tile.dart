@@ -24,22 +24,7 @@ class BeforeTakeTile extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme.bodyText2;
     return Row(
       children: [
-      CupertinoButton(
-        padding: EdgeInsets.zero,
-        // 이미지 경로가 null 이면 사진이 안 띄도록 처리
-        onPressed: medicineAlarm.imagePath == null
-        ? null
-        : () {
-          Navigator.push(context,
-          FadePageRoute(page: ImageDetailPage(medicineAlarm: medicineAlarm)));
-        },
-        child: CircleAvatar(
-          radius: 40,
-          foregroundImage: medicineAlarm.imagePath == null ?
-          null 
-          : FileImage(File(medicineAlarm.imagePath!)),
-        ),
-      ),
+      _MedicineImageButton(medicineAlarm: medicineAlarm),
       const SizedBox(width: smallSpace,),
       const Divider( // 영역 구분감을 주기위해 추가
         height: 1,
@@ -48,55 +33,102 @@ class BeforeTakeTile extends StatelessWidget {
       Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              medicineAlarm.alarmTime,
-              style: textStyle,
-              ),
-              const SizedBox(height: 6,),// 다음 줄 구분감을 주기 위해 높이 지정
-              Wrap(
-              // 3가지의 텍스트 구분으로 나누기위해 row -> 영역이 넘쳐서 에러를 
-              // Wrap으로 감싸서 다음줄로 이동
-              crossAxisAlignment: WrapCrossAlignment.center,
-                children: [ 
-                Text('${medicineAlarm.name},', style: textStyle),
-                TileActionButton(onTap: () {}, title: '지금',),
-                Text('|', style: textStyle),
-                TileActionButton(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => 
-                      TimeSettingBottomSheet(initialTime: medicineAlarm.alarmTime,
-                      ),
-                    ).then((takeDateTime) {
-                      // takeDateTime이 null 값이 던가 아님, DateTime이 아니면 다음 코드를 수행하지 않는다.
-                      if(takeDateTime == null || takeDateTime is! DateTime){
-                        return;
-                      }
-
-                      historyRepository.addHistory(MedicineHistory(
-                        medicinedId: medicineAlarm.id,
-                      alarmTime: medicineAlarm.alarmTime, 
-                      takeTime: takeDateTime,
-                      ));
-                    });
-                  }, 
-                  title: '아까',
-                  ),
-                Text('먹었어요!,', style: textStyle),
-              ],
-            )
-          ],
+          children: _buildTileBody(textStyle, context),
         ),
       ),
-      CupertinoButton(
-        onPressed: () {
-          medicineRepository.deleteMedicine(medicineAlarm.key);
-        },
-        child: const Icon(CupertinoIcons.ellipsis_vertical),
-        ),
+      _MoreButton(medicineAlarm: medicineAlarm),
       ],
+    );
+  }
+
+  List<Widget> _buildTileBody(TextStyle? textStyle, BuildContext context) {
+    return [
+          Text(
+            medicineAlarm.alarmTime,
+            style: textStyle,
+            ),
+            const SizedBox(height: 6,),// 다음 줄 구분감을 주기 위해 높이 지정
+            Wrap(
+            // 3가지의 텍스트 구분으로 나누기위해 row -> 영역이 넘쳐서 에러를 
+            // Wrap으로 감싸서 다음줄로 이동
+            crossAxisAlignment: WrapCrossAlignment.center,
+              children: [ 
+              Text('${medicineAlarm.name},', style: textStyle),
+              TileActionButton(onTap: () {}, title: '지금',),
+              Text('|', style: textStyle),
+              TileActionButton(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => 
+                    TimeSettingBottomSheet(initialTime: medicineAlarm.alarmTime,
+                    ),
+                  ).then((takeDateTime) {
+                    // takeDateTime이 null 값이 던가 아님, DateTime이 아니면 다음 코드를 수행하지 않는다.
+                    if(takeDateTime == null || takeDateTime is! DateTime){
+                      return;
+                    }
+
+                    historyRepository.addHistory(MedicineHistory(
+                      medicinedId: medicineAlarm.id,
+                    alarmTime: medicineAlarm.alarmTime, 
+                    takeTime: takeDateTime,
+                    ));
+                  });
+                }, 
+                title: '아까',
+                ),
+              Text('먹었어요!,', style: textStyle),
+            ],
+          )
+        ];
+  }
+}
+
+class _MoreButton extends StatelessWidget {
+  const _MoreButton({
+    Key? key,
+    required this.medicineAlarm,
+  }) : super(key: key);
+
+  final MedicineAlarm medicineAlarm;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoButton(
+      onPressed: () {
+        medicineRepository.deleteMedicine(medicineAlarm.key);
+      },
+      child: const Icon(CupertinoIcons.ellipsis_vertical),
+      );
+  }
+}
+
+class _MedicineImageButton extends StatelessWidget {
+  const _MedicineImageButton({
+    Key? key,
+    required this.medicineAlarm,
+  }) : super(key: key);
+
+  final MedicineAlarm medicineAlarm;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoButton(
+      padding: EdgeInsets.zero,
+      // 이미지 경로가 null 이면 사진이 안 띄도록 처리
+      onPressed: medicineAlarm.imagePath == null
+      ? null
+      : () {
+        Navigator.push(context,
+        FadePageRoute(page: ImageDetailPage(medicineAlarm: medicineAlarm)));
+      },
+      child: CircleAvatar(
+        radius: 40,
+        foregroundImage: medicineAlarm.imagePath == null ?
+        null 
+        : FileImage(File(medicineAlarm.imagePath!)),
+      ),
     );
   }
 }
