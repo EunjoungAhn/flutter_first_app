@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import '../../components/app_constants.dart';
-import '../../components/app_page_route.dart';
-import '../../models/medicine_alarm.dart';
-import '../../models/medicine_history.dart';
-import '../bottomsheet/time_setting_bottomsheet.dart';
+import 'package:first_app/components/app_constants.dart';
+import 'package:first_app/components/app_page_route.dart';
+import 'package:first_app/models/medicine_alarm.dart';
+import 'package:first_app/models/medicine_history.dart';
+import 'package:first_app/pages/bottomsheet/time_setting_bottomsheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
