@@ -99,14 +99,17 @@ Widget _buildListTile(MedicineAlarm medicineAlarm){
         );
       }
 
-      final todayTakeHistory = historyBox.values.singleWhere((history) => 
-        history.medicinedId == medicineAlarm.id && 
-        history.alarmTime == medicineAlarm.alarmTime &&
+      final todayTakeHistory = historyBox.values.singleWhere(
+        (history) => 
+          history.medicinedId == medicineAlarm.id && 
+          history.medicineKey == medicineAlarm.key && 
+          history.alarmTime == medicineAlarm.alarmTime &&
         isToday(history.takeTime, DateTime.now()),
         orElse: () => MedicineHistory(
           medicinedId: -1,
           alarmTime: '',
           takeTime: DateTime.now(),
+          medicineKey: -1,
         ),
       );
 

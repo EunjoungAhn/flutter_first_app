@@ -8,6 +8,7 @@ class MedicineHistory extends HiveObject{ // @HiveType(typeId: 1) 는 1부터 �
     required this.medicinedId, 
     required this.alarmTime, 
     required this.takeTime,     
+    required this.medicineKey,
   });
 
   @HiveField(0) // @HiveField(0) 는 0부터 시작
@@ -19,8 +20,11 @@ class MedicineHistory extends HiveObject{ // @HiveType(typeId: 1) 는 1부터 �
   @HiveField(2)
   final DateTime takeTime;
 
+  @HiveField(3, defaultValue: -1)
+  final int medicineKey;
+
   @override
   String toString() {
-    return '{medicinedId: $medicinedId, alarmTime: $alarmTime, takeTime: $takeTime}';
+    return '{medicinedId: $medicinedId, alarmTime: $alarmTime, takeTime: $takeTime, medicineKey: $medicineKey}';
   }
 }

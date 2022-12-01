@@ -58,8 +58,9 @@ class BeforeTakeTile extends StatelessWidget {
                   onTap: () { // 현재 시작으로 저장되면서 이미지가 쌓이는 처리
                     historyRepository.addHistory(MedicineHistory(
                       medicinedId: medicineAlarm.id,
-                    alarmTime: medicineAlarm.alarmTime, 
-                    takeTime: DateTime.now(),
+                      medicineKey: medicineAlarm.key,
+                      alarmTime: medicineAlarm.alarmTime, 
+                      takeTime: DateTime.now(),
                     ));
                   },
                   title: '지금',
@@ -90,8 +91,9 @@ class BeforeTakeTile extends StatelessWidget {
 
       historyRepository.addHistory(MedicineHistory(
         medicinedId: medicineAlarm.id,
-      alarmTime: medicineAlarm.alarmTime, 
-      takeTime: takeDateTime,
+        medicineKey: medicineAlarm.key,
+        alarmTime: medicineAlarm.alarmTime, 
+        takeTime: takeDateTime,
       ));
     });
   }
@@ -208,6 +210,7 @@ class AfterTakeTile extends StatelessWidget {
         key: history.key,
         history: MedicineHistory(
           medicinedId: medicineAlarm.id,
+          medicineKey: medicineAlarm.key,
           alarmTime: medicineAlarm.alarmTime, 
           takeTime: takeDateTime,
       ), );
