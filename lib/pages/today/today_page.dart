@@ -110,6 +110,8 @@ Widget _buildListTile(MedicineAlarm medicineAlarm){
           alarmTime: '',
           takeTime: DateTime.now(),
           medicineKey: -1,
+          imagePath: null,
+          name: '',
         ),
       );
 

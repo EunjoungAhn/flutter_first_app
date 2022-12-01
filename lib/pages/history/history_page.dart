@@ -122,7 +122,12 @@ class _TimeTile extends StatelessWidget {
         (element) => 
           element.id == history.medicinedId &&
           element.key == history.medicineKey,
-      orElse: () => Medicine(id: -1, name: '삭제된 약입니다.', imagePath: null, alarms: []),
+      orElse: () => Medicine(
+        id: -1,
+        name: history.name, //'삭제된 약입니다.'
+        imagePath: history.imagePath,
+        alarms: [],
+      ),
     );
   }
 }

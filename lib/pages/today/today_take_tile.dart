@@ -56,12 +56,16 @@ class BeforeTakeTile extends StatelessWidget {
               Text('${medicineAlarm.name},', style: textStyle),
               TileActionButton(
                   onTap: () { // 현재 시작으로 저장되면서 이미지가 쌓이는 처리
-                    historyRepository.addHistory(MedicineHistory(
-                      medicinedId: medicineAlarm.id,
-                      medicineKey: medicineAlarm.key,
-                      alarmTime: medicineAlarm.alarmTime, 
-                      takeTime: DateTime.now(),
-                    ));
+                    historyRepository.addHistory(
+                      MedicineHistory(
+                        medicinedId: medicineAlarm.id,
+                        medicineKey: medicineAlarm.key,
+                        alarmTime: medicineAlarm.alarmTime, 
+                        takeTime: DateTime.now(),
+                        imagePath: medicineAlarm.imagePath,
+                        name: medicineAlarm.name,
+                      ),
+                    );
                   },
                   title: '지금',
                 ),
@@ -89,12 +93,16 @@ class BeforeTakeTile extends StatelessWidget {
         return;
       }
 
-      historyRepository.addHistory(MedicineHistory(
-        medicinedId: medicineAlarm.id,
-        medicineKey: medicineAlarm.key,
-        alarmTime: medicineAlarm.alarmTime, 
-        takeTime: takeDateTime,
-      ));
+      historyRepository.addHistory(
+        MedicineHistory(
+          medicinedId: medicineAlarm.id,
+          medicineKey: medicineAlarm.key,
+          alarmTime: medicineAlarm.alarmTime, 
+          takeTime: takeDateTime,
+          imagePath: medicineAlarm.imagePath,
+          name: medicineAlarm.name,
+        ),
+      );
     });
   }
 
@@ -213,7 +221,10 @@ class AfterTakeTile extends StatelessWidget {
           medicineKey: medicineAlarm.key,
           alarmTime: medicineAlarm.alarmTime, 
           takeTime: takeDateTime,
-      ), );
+          imagePath: medicineAlarm.imagePath,
+          name: medicineAlarm.name,
+        ), 
+      );
     });
   }
 
