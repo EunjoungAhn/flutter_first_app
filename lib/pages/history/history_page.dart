@@ -32,7 +32,7 @@ class HistoryPage extends StatelessWidget {
   }
 
   Widget _buildListView(context, Box<MedicineHistory> historyBox, _) {
-    final histories = historyBox.values.toList();
+    final histories = historyBox.values.toList().reversed.toList(); // 리스트 역순으로 출력
       return ListView.builder(
         itemCount: histories.length,
         itemBuilder: (context, index) {
@@ -59,14 +59,14 @@ class _TimeTile extends StatelessWidget {
           flex: 1,
           child: Text(
           // '2022\n12.01.목'       - 로케일 값을 한글로 설정(설정을 위해 main에 initializeDateFormatting() import)
-          DateFormat('yyyy\nMM.dd E', 'ko_KR').format(history.takeTime),
-          textAlign: TextAlign.center,
-        
-          style: Theme.of(context).textTheme.subtitle2!.copyWith(
-            height: 1.6, // 간극
-            leadingDistribution: TextLeadingDistribution.even, // 글자 간격 기준으로 자동 설정을 3번째로
+            DateFormat('yyyy\nMM.dd E', 'ko_KR').format(history.takeTime),
+            textAlign: TextAlign.center,
+          
+            style: Theme.of(context).textTheme.subtitle2!.copyWith(
+              height: 1.6, // 간극
+              leadingDistribution: TextLeadingDistribution.even, // 글자 간격 기준으로 자동 설정을 3번째로
+            ),
           ),
-                    ),
         ),
       Stack(
         alignment: const Alignment(0.0, -0.3),
@@ -91,13 +91,23 @@ class _TimeTile extends StatelessWidget {
       Expanded(
         flex: 3,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // 이미지가 없을때는 버튼이 안보이게 하는 위젯 처리 if문과 동일
             Visibility(
               visible: medicine.imagePath != null,
               child: MedicineImageButton(imagePath: medicine.imagePath),
               ),
-            Text(medicine.name),
+              const SizedBox(width: smallSpace,),
+              Text( // a는 오전 오후를 나타내는 것이다. / 'ko_KR' 를 지우면 AM, PM으로 출력됨
+                DateFormat('a hh:mm', 'ko_KR').format(history.takeTime) +
+                  '\n' +
+                  medicine.name,
+                style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                    height: 1.6, // 간극
+                    leadingDistribution: TextLeadingDistribution.even, // 글자 간격 기준으로 자동 설정을 3번째로
+              ),
+            ),
           ],
         ),
       ),
