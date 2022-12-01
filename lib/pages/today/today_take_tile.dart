@@ -179,7 +179,7 @@ class AfterTakeTile extends StatelessWidget {
         ];
   }
 
-  String get takeTimeStr => DateFormat('HH시 mm분에').format(history.takeTime);
+  String get takeTimeStr => DateFormat('HH:mm').format(history.takeTime);
 
 // StatelessWidget여서 BuildContext를 받아와서 사용한다. Statefull 위젯은 매개변수로 받아와서 사용해도 된다.
   void _onTap(BuildContext context) {
