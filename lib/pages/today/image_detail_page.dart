@@ -7,10 +7,10 @@ import '../../models/medicine_alarm.dart';
 class ImageDetailPage extends StatelessWidget {
   const ImageDetailPage({
     Key? key,
-    required this.medicineAlarm,
+    required this.imagePath,
   }) : super(key: key);
 
-  final MedicineAlarm medicineAlarm;
+  final String imagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class ImageDetailPage extends StatelessWidget {
         leading: const CloseButton(),
       ),
       body: Center(
-        child: Image.file(File(medicineAlarm.imagePath!),
+        child: Image.file(File(imagePath),
         ),
       ),
       );

@@ -41,7 +41,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                 ),
                 const SizedBox(height: largeSpace),
                 Center(
-                  child: MedicineImageButton(
+                  child: _MedicineImageButton(
                     changeImageFile: (File? value) {
                       _medicineImage = value;
                     },
@@ -97,17 +97,17 @@ void _onAddAlarmPage() {
 
 
 
-class MedicineImageButton extends StatefulWidget {
-  const MedicineImageButton({super.key, required this.changeImageFile});
+class _MedicineImageButton extends StatefulWidget {
+  const _MedicineImageButton({super.key, required this.changeImageFile});
 
   //안쪽(MedicineImageButton)에서만 사용되는 이미지 파일을 밖에서도 쓸 수 있도록 설정
   final ValueChanged<File?> changeImageFile;
 
   @override
-  State<MedicineImageButton> createState() => _MedicineImageButtonState();
+  State<_MedicineImageButton> createState() => _MedicineImageButtonState();
 }
 
-class _MedicineImageButtonState extends State<MedicineImageButton> {
+class _MedicineImageButtonState extends State<_MedicineImageButton> {
   File? _pickedImage;
 
   @override

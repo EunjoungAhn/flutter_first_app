@@ -24,7 +24,7 @@ class BeforeTakeTile extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme.bodyText2;
     return Row(
       children: [
-      _MedicineImageButton(medicineAlarm: medicineAlarm),
+      MedicineImageButton(imagePath: medicineAlarm.imagePath, ),
       const SizedBox(width: smallSpace,),
       const Divider( // 영역 구분감을 주기위해 추가
         height: 1,
@@ -113,11 +113,12 @@ class AfterTakeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText2;
+
     return Row(
       children: [
       Stack( // 이미지를 겹겹히 쌓는 것
         children: [
-          _MedicineImageButton(medicineAlarm: medicineAlarm),
+          MedicineImageButton(imagePath: medicineAlarm.imagePath, ),
           CircleAvatar(
             radius: 40,
             backgroundColor: Colors.green.withOpacity(0.7),
@@ -234,30 +235,30 @@ class _MoreButton extends StatelessWidget {
   }
 }
 
-class _MedicineImageButton extends StatelessWidget {
-  const _MedicineImageButton({
+class MedicineImageButton extends StatelessWidget {
+  const MedicineImageButton({
     Key? key,
-    required this.medicineAlarm,
+    required this.imagePath,
   }) : super(key: key);
 
-  final MedicineAlarm medicineAlarm;
+  final String? imagePath;
 
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
       padding: EdgeInsets.zero,
       // 이미지 경로가 null 이면 사진이 안 띄도록 처리
-      onPressed: medicineAlarm.imagePath == null
+      onPressed: imagePath == null
       ? null
       : () {
         Navigator.push(context,
-        FadePageRoute(page: ImageDetailPage(medicineAlarm: medicineAlarm)));
+        FadePageRoute(page: ImageDetailPage(imagePath: imagePath!)));
       },
       child: CircleAvatar(
         radius: 40,
-        foregroundImage: medicineAlarm.imagePath == null ?
+        foregroundImage: imagePath == null ?
         null 
-        : FileImage(File(medicineAlarm.imagePath!)),
+        : FileImage(File(imagePath!)),
       ),
     );
   }
