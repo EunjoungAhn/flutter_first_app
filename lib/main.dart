@@ -4,6 +4,7 @@ import 'package:first_app/repositories/medicine_history_repository.dart';
 import 'package:first_app/repositories/medicine_repository.dart';
 import 'package:first_app/services/app_notification_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'pages/home_page.dart';
 
@@ -13,6 +14,8 @@ final medicineRepository = MedicineRepository();
 final historyRepository = MedicineHistoryRepository();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized;
+
+  initializeDateFormatting(); // 날짜 포멧을 한글로 받아오기 위한 import
 
   notification.initializeTimeZone();
   notification.initializeNotification();
