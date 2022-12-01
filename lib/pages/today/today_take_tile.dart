@@ -4,6 +4,7 @@ import 'package:first_app/components/app_constants.dart';
 import 'package:first_app/components/app_page_route.dart';
 import 'package:first_app/models/medicine_alarm.dart';
 import 'package:first_app/models/medicine_history.dart';
+import 'package:first_app/pages/bottomsheet/more_action_bottomsheet.dart';
 import 'package:first_app/pages/bottomsheet/time_setting_bottomsheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -242,7 +243,15 @@ class _MoreButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoButton(
       onPressed: () {
-        medicineRepository.deleteMedicine(medicineAlarm.key);
+        // medicineRepository.deleteMedicine(medicineAlarm.key);
+        showModalBottomSheet(
+          context: context, 
+          builder: (context) => MoreActionBottomSheet(
+            onPressedModify: (){},
+            onPressedDeleteOnlymedicine: (){}, 
+            onPressedDeleteAll: () {  },
+          ),
+        );
       },
       child: const Icon(CupertinoIcons.ellipsis_vertical),
       );

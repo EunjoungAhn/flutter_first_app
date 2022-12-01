@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:first_app/components/app_constants.dart';
 import 'package:first_app/components/app_widgets.dart';
 import 'package:first_app/pages/add_medicine/add_alarm_page.dart';
+import 'package:first_app/pages/bottomsheet/pick_image_bottomsheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -168,29 +169,3 @@ class _MedicineImageButtonState extends State<_MedicineImageButton> {
   }
 }
 
-class PickImageBottomSheet extends StatelessWidget {
-  const PickImageBottomSheet({
-    super.key,
-    required this.onPressedCamera,
-    required this.onPressedGallery
-    });
-
-  // onPressed를 받아서 처리하려고 class 변수로 설정
-  final VoidCallback onPressedCamera;
-  final VoidCallback onPressedGallery;
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomSheetBody(children: [
-          TextButton(
-            onPressed: onPressedCamera,
-            child: const Text('카메라로 촬영'),
-          ),
-          TextButton(
-            onPressed: onPressedGallery,
-            child: const Text('앨범에서 가져오기'),
-        ),
-      ],
-    );
-  }
-}
