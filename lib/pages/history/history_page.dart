@@ -92,7 +92,11 @@ class _TimeTile extends StatelessWidget {
         flex: 3,
         child: Row(
           children: [
-            MedicineImageButton(imagePath: medicine.imagePath),
+            // 이미지가 없을때는 버튼이 안보이게 하는 위젯 처리 if문과 동일
+            Visibility(
+              visible: medicine.imagePath != null,
+              child: MedicineImageButton(imagePath: medicine.imagePath),
+              ),
             Text(medicine.name),
           ],
         ),
