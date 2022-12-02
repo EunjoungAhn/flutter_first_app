@@ -124,23 +124,30 @@ class AddAlarmPage extends StatelessWidget {
         return showPermissionDenied(context, permission: '알람');
       }
     }
-    
-    // 2-1. delete previous image
 
-    // 2-1. save image (local dir)
-    String? imageFilePath;
-    if (medicineImage != null) {
-      imageFilePath = await saveImageToLocalDirectory(medicineImage!);
+    // 이미지가 같다면 실행해주고 다르다면 무시
+    String? imageFilePath = _updateMedicine.imagePath;
+    if(_updateMedicine.imagePath != medicineImage?.path){
+      // 2-1. delete previous image
+      if(_updateMedicine.imagePath != null){
+        deleteImage(_updateMedicine.imagePath!);
+      }
+
+      // 2-1. save image (local dir)
+      if (medicineImage != null) {
+        imageFilePath = await saveImageToLocalDirectory(medicineImage!);
+      }
     }
-
-    // 3. add medicine model (local DB, hive)
+    
+ 
+    // 3. update medicine model (local DB, hive)
     final medicine = Medicine(
       id: updateMedicineId, // 업데이트 될 아이디로 등록되어야 한다. 
       name: medicineName, 
       imagePath: imageFilePath, 
       alarms: service.alarms.toList(),
     );
-    medicineRepository.addMedicine(medicine);
+    medicineRepository.updateMedicine(key: _updateMedicine.key, medicine: medicine);
 
     // ignore: use_build_context_synchronously
     Navigator.popUntil(context, (route) => route.isFirst); // 지금까지 쌓인 레이아웃을 벗어나 가장 첫 화면으로 나가고 싶을때 popUntil 사용
