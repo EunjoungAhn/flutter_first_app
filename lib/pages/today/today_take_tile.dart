@@ -256,7 +256,16 @@ class _MoreButton extends StatelessWidget {
               // 3. pop
               Navigator.pop(context);
             }, 
-            onPressedDeleteAll: () {  },
+            onPressedDeleteAll: () {  
+              // 1. 알람삭제
+              notification.deleteMultipleAlarm(alarmIds);
+              // 2. history 데이터 삭제
+              historyRepository.deleteAllHistory(keys);
+              // 3. hive 데이터 삭제
+              medicineRepository.deleteMedicine(medicineAlarm.key);
+              // 4. pop
+              Navigator.pop(context);
+            },
           ),
         );
       },
@@ -268,6 +277,14 @@ class _MoreButton extends StatelessWidget {
     final medicine = medicineRepository.medicineBox.values.singleWhere((element) => element.id == medicineAlarm.id);
     final alarmIds = medicine.alarms.map((alarmStr) => notification.alarmId(medicineAlarm.id, alarmStr)).toList();
     return alarmIds;
+  }
+
+  Iterable<int> get keys { // 삭제하고 하는 key 값은 history의 key 값이다.
+    final historis = historyRepository.historyBox.values.where((history) => 
+      history.medicinedId == medicineAlarm.id &&
+      history.medicineKey == medicineAlarm.key);
+    final keys = historis.map((e) => e.key as int); // map으로 타입 전환
+    return keys;
   }
 
 }
