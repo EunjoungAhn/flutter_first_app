@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:first_app/components/app_constants.dart';
 import 'package:first_app/components/app_widgets.dart';
+import 'package:first_app/main.dart';
+import 'package:first_app/models/medicine.dart';
 import 'package:first_app/pages/add_medicine/add_alarm_page.dart';
 import 'package:first_app/pages/bottomsheet/pick_image_bottomsheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,15 +14,38 @@ import '../../components/app_page_route.dart';
 import 'components/add_page_widget.dart';
 
 class AddMedicinePage  extends StatefulWidget {
-  const AddMedicinePage ({super.key});
+  const AddMedicinePage ({
+    super.key,
+    this.updateMedicineId = -1,
+  });
+
+  final int updateMedicineId; 
 
   @override
   State<AddMedicinePage> createState() => _AddMedicinePageState();
 }
 
 class _AddMedicinePageState extends State<AddMedicinePage> {
-  final _nameController = TextEditingController();
+  late TextEditingController _nameController;
   File? _medicineImage;
+
+  // updateMedicineId 가 있으면 수정으로 바라본다.
+  bool get _inUpdate => widget.updateMedicineId != -1;
+  // true일때 Medicine 객체를 쉽고 빠르게 접근하기 위해 작성
+  Medicine get _UpdateMedicine => medicineRepository.medicineBox.values
+  .singleWhere((medicine) => medicine.id == widget.updateMedicineId,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+
+    if(_inUpdate){
+      _nameController = TextEditingController(text: _UpdateMedicine.name);
+    }else{
+      _nameController = TextEditingController();
+    }
+  }
 
   @override
   void dispose() {

@@ -251,7 +251,9 @@ class _MoreButton extends StatelessWidget {
             onPressedModify: (){
               Navigator.push(
                 context,
-                FadePageRoute(page: AddMedicinePage()),
+                FadePageRoute(// 아이디 값이 있기 때문에 수정하는 페이지로 연결한다 라는 의미
+                  page: AddMedicinePage(updateMedicineId: medicineAlarm.id),
+                ),
               ).then((_) => Navigator.maybePop(context));
             },
             onPressedDeleteOnlymedicine: (){
