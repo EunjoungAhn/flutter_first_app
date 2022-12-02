@@ -1,3 +1,4 @@
+import 'package:first_app/pages/today/history_empty_widget.dart';
 import 'package:first_app/pages/today/today_take_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -33,6 +34,12 @@ class HistoryPage extends StatelessWidget {
 
   Widget _buildListView(context, Box<MedicineHistory> historyBox, _) {
     final histories = historyBox.values.toList().reversed.toList(); // 리스트 역순으로 출력
+
+    // 약 복욕이 하나도 없다면 empty 화면을 보여줘라
+    if(histories.isEmpty){
+      return const HistoryEmpty();
+    }
+
       return ListView.builder(
         itemCount: histories.length,
         itemBuilder: (context, index) {
