@@ -32,7 +32,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
   // updateMedicineId 가 있으면 수정으로 바라본다.
   bool get _inUpdate => widget.updateMedicineId != -1;
   // true일때 Medicine 객체를 쉽고 빠르게 접근하기 위해 작성
-  Medicine get _UpdateMedicine => medicineRepository.medicineBox.values
+  Medicine get _updateMedicine => medicineRepository.medicineBox.values
   .singleWhere((medicine) => medicine.id == widget.updateMedicineId,
   );
 
@@ -41,7 +41,10 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
     super.initState();
 
     if(_inUpdate){
-      _nameController = TextEditingController(text: _UpdateMedicine.name);
+      _nameController = TextEditingController(text: _updateMedicine.name);
+      if(_updateMedicine.imagePath != null){
+          _medicineImage = File(_updateMedicine.imagePath!); // 이건 더 이상 null 값이 아니다.
+      }
     }else{
       _nameController = TextEditingController();
     }
@@ -68,6 +71,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                 const SizedBox(height: largeSpace),
                 Center(
                   child: _MedicineImageButton(
+                    updateImage: _medicineImage,
                     changeImageFile: (File? value) {
                       _medicineImage = value;
                     },
@@ -124,10 +128,13 @@ void _onAddAlarmPage() {
 
 
 class _MedicineImageButton extends StatefulWidget {
-  const _MedicineImageButton({super.key, required this.changeImageFile});
+  const _MedicineImageButton({super.key, required this.changeImageFile, this.updateImage});
 
   //안쪽(MedicineImageButton)에서만 사용되는 이미지 파일을 밖에서도 쓸 수 있도록 설정
   final ValueChanged<File?> changeImageFile;
+
+  //버튼에 이미지를 그려줌으로 수정 버튼 클릭시 이미지를 넘겨주어야 함으로 작성
+  final File? updateImage;
 
   @override
   State<_MedicineImageButton> createState() => _MedicineImageButtonState();
@@ -135,6 +142,12 @@ class _MedicineImageButton extends StatefulWidget {
 
 class _MedicineImageButtonState extends State<_MedicineImageButton> {
   File? _pickedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    _pickedImage = widget.updateImage;
+  }
 
   @override
   Widget build(BuildContext context) {
