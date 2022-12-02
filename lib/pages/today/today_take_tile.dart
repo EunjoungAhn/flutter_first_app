@@ -248,7 +248,14 @@ class _MoreButton extends StatelessWidget {
           context: context, 
           builder: (context) => MoreActionBottomSheet(
             onPressedModify: (){},
-            onPressedDeleteOnlymedicine: (){}, 
+            onPressedDeleteOnlymedicine: (){
+              // 1. 알람삭제
+              notification.deleteMultipleAlarm(alarmIds);
+              // 2. hive 데이터 삭제
+              medicineRepository.deleteMedicine(medicineAlarm.key);
+              // 3. pop
+              Navigator.pop(context);
+            }, 
             onPressedDeleteAll: () {  },
           ),
         );
@@ -256,6 +263,13 @@ class _MoreButton extends StatelessWidget {
       child: const Icon(CupertinoIcons.ellipsis_vertical),
       );
   }
+
+  List<String> get alarmIds {
+    final medicine = medicineRepository.medicineBox.values.singleWhere((element) => element.id == medicineAlarm.id);
+    final alarmIds = medicine.alarms.map((alarmStr) => notification.alarmId(medicineAlarm.id, alarmStr)).toList();
+    return alarmIds;
+  }
+
 }
 
 class MedicineImageButton extends StatelessWidget {

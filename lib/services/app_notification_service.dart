@@ -132,6 +132,7 @@ class AppNotificationService {
     }
   }
 
+// 다중 알람 삭제 매서드
   Future<void> deleteMultipleAlarm(Iterable<String> alarmIds) async {
     log('[before delete notification list] ${await pendingNotificationIds}');
     for (final alarmId in alarmIds) {

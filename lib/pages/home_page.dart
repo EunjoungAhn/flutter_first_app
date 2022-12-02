@@ -1,5 +1,6 @@
 import 'package:first_app/components/app_colors.dart';
 import 'package:first_app/components/app_constants.dart';
+import 'package:first_app/main.dart';
 import 'package:first_app/pages/add_medicine/add_medicine_page.dart';
 import 'package:first_app/pages/history/history_page.dart';
 import 'package:first_app/pages/today/today_page.dart';
@@ -83,8 +84,11 @@ class _HomePageState extends State<HomePage> {
 
   void _onAddMedicien(){
     // 새로운 레아이웃 페이지로 이동
-    Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const AddMedicinePage()));
+    // Navigator.push(
+    //   context, MaterialPageRoute(builder: (context) => const AddMedicinePage()));
+    
+    //임시 삭제 버튼 - 남아있는 데이터 제거
+    notification.deleteMultipleAlarm(['21300', '30859', '41000', '41200', '41300', '21100', '20500', '21200', '21000', '21600', '20900', '31000', '31200', '31300']);
   }
 
 }
