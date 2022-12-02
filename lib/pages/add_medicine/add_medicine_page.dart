@@ -118,7 +118,8 @@ void _onAddAlarmPage() {
       FadePageRoute( // 기존의 MaterialPageRoute에서 ios와 android 화면 통일을위해 fade 효과로 커스텀
         page: AddAlarmPage(
           medicineImage: _medicineImage,
-          medicineName: _nameController.text
+          medicineName: _nameController.text, 
+          updateMedicineId: widget.updateMedicineId,
         ),
       ),
     );
