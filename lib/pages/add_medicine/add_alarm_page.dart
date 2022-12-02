@@ -56,6 +56,14 @@ class AddAlarmPage extends StatelessWidget {
     ),
     bottomNavigationBar: BottomSubmitButton(
       onPressed: () async {
+        await _onAddMedicine(context);
+      },
+      text: '완료',
+    ),
+    );
+  }
+
+  Future<void> _onAddMedicine(BuildContext context) async {
         bool result = false;
         // 1. add alarm
         for(var alarm in service.alarms){
@@ -89,10 +97,6 @@ class AddAlarmPage extends StatelessWidget {
         // ignore: use_build_context_synchronously
         Navigator.popUntil(context, (route) => route.isFirst); // 지금까지 쌓인 레이아웃을 벗어나 가장 첫 화면으로 나가고 싶을때 popUntil 사용
       },
-      text: '완료',
-    ),
-    );
-  }
 
 // 시간을 리스트 형식으로 중복(set)처리해서 출력
   List<Widget> get alarmWidgets {
