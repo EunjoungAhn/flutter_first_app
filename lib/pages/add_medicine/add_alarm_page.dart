@@ -56,7 +56,11 @@ class AddAlarmPage extends StatelessWidget {
     ),
     bottomNavigationBar: BottomSubmitButton(
       onPressed: () async {
-        await _onAddMedicine(context);
+        final isUpdate = updateMedicineId != -1; // 수정할 값이 있으면
+
+        isUpdate
+          ? await _onUpdateMedicine(context)
+          : await _onAddMedicine(context);
       },
       text: '완료',
     ),
@@ -64,39 +68,87 @@ class AddAlarmPage extends StatelessWidget {
   }
 
   Future<void> _onAddMedicine(BuildContext context) async {
-        bool result = false;
-        // 1. add alarm
-        for(var alarm in service.alarms){
-          result = await notification.addNotifcication(
-            medicineId: medicineRepository.newId,
-            alarmTimeStr: alarm,
-            title: '$alarm 약 먹을 시간이에요!',
-            body: '$medicineName 복약했다고 알려주세요!',
-          );
+    bool result = false;
+    // 1. add alarm
+    for(var alarm in service.alarms){
+      result = await notification.addNotifcication(
+        medicineId: medicineRepository.newId,
+        alarmTimeStr: alarm,
+        title: '$alarm 약 먹을 시간이에요!',
+        body: '$medicineName 복약했다고 알려주세요!',
+      );
 
-          if(!result){
-            return showPermissionDenied(context, permission: '알람');
-          }
-        }
-        
-        // 2. save image (local dir)
-        String? imageFilePath;
-        if (medicineImage != null) {
-          imageFilePath = await saveImageToLocalDirectory(medicineImage!);
-        }
+      if(!result){
+        return showPermissionDenied(context, permission: '알람');
+      }
+    }
+    
+    // 2. save image (local dir)
+    String? imageFilePath;
+    if (medicineImage != null) {
+      imageFilePath = await saveImageToLocalDirectory(medicineImage!);
+    }
 
-        // 3. add medicine model (local DB, hive)
-        final medicine = Medicine(
-          id: medicineRepository.newId, 
-          name: medicineName, 
-          imagePath: imageFilePath, 
-          alarms: service.alarms.toList(),
-        );
-        medicineRepository.addMedicine(medicine);
+    // 3. add medicine model (local DB, hive)
+    final medicine = Medicine(
+      id: medicineRepository.newId, 
+      name: medicineName, 
+      imagePath: imageFilePath, 
+      alarms: service.alarms.toList(),
+    );
+    medicineRepository.addMedicine(medicine);
 
-        // ignore: use_build_context_synchronously
-        Navigator.popUntil(context, (route) => route.isFirst); // 지금까지 쌓인 레이아웃을 벗어나 가장 첫 화면으로 나가고 싶을때 popUntil 사용
-      },
+    // ignore: use_build_context_synchronously
+    Navigator.popUntil(context, (route) => route.isFirst); // 지금까지 쌓인 레이아웃을 벗어나 가장 첫 화면으로 나가고 싶을때 popUntil 사용
+  }
+
+  Future<void> _onUpdateMedicine(BuildContext context) async {
+    bool result = false;
+
+    // 1-1. delete previous alarm - 기존의 가지고 있던 알람 삭제
+    final alarmIds = _updateMedicine.alarms.map(
+      (alarmTime) => notification.alarmId(updateMedicineId, alarmTime)
+    );
+    await notification.deleteMultipleAlarm(alarmIds);
+
+    // 1-2. add alarm
+    for(var alarm in service.alarms){
+      result = await notification.addNotifcication(
+        medicineId: medicineRepository.newId,
+        alarmTimeStr: alarm,
+        title: '$alarm 약 먹을 시간이에요!',
+        body: '$medicineName 복약했다고 알려주세요!',
+      );
+
+      if(!result){
+        return showPermissionDenied(context, permission: '알람');
+      }
+    }
+    
+    // 2-1. delete previous image
+
+    // 2-1. save image (local dir)
+    String? imageFilePath;
+    if (medicineImage != null) {
+      imageFilePath = await saveImageToLocalDirectory(medicineImage!);
+    }
+
+    // 3. add medicine model (local DB, hive)
+    final medicine = Medicine(
+      id: updateMedicineId, // 업데이트 될 아이디로 등록되어야 한다. 
+      name: medicineName, 
+      imagePath: imageFilePath, 
+      alarms: service.alarms.toList(),
+    );
+    medicineRepository.addMedicine(medicine);
+
+    // ignore: use_build_context_synchronously
+    Navigator.popUntil(context, (route) => route.isFirst); // 지금까지 쌓인 레이아웃을 벗어나 가장 첫 화면으로 나가고 싶을때 popUntil 사용
+  }
+
+  Medicine get _updateMedicine => medicineRepository.medicineBox.values
+  .singleWhere((medicine) => medicine.id == updateMedicineId,
+  );
 
 // 시간을 리스트 형식으로 중복(set)처리해서 출력
   List<Widget> get alarmWidgets {

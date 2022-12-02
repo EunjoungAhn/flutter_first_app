@@ -15,3 +15,8 @@ Future<String> saveImageToLocalDirectory(File image) async {
 
   return filePath;
 }
+
+// 이미지 삭제 함수
+void deleteImage(String filePath){
+  File(filePath).delete(recursive: true); // recursive를 활성하 하면 삭제하려고 선택한 파일의 하위가 있을 경우 하위까지 삭제 해준다.
+}
