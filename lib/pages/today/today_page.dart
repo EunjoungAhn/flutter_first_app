@@ -10,6 +10,7 @@ import 'package:first_app/pages/today/today_take_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 //내 파일 안에서 접근하는
 import '../../models/medicine.dart';
 import '../../models/medicine_alarm.dart';
@@ -61,6 +62,13 @@ class TodayPage extends StatelessWidget {
         ));
       }
     }
+
+    // 리스트 sort 작업
+    medicineAlarms.sort(
+      (a, b) => DateFormat('HH:mm')
+    .parse(a.alarmTime)
+    .compareTo(DateFormat('HH:mm').parse(b.alarmTime)),
+  );
 
 
     return Column(
