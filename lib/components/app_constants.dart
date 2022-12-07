@@ -10,7 +10,7 @@ const double largeSpace = 20.0;
 const double smallSpace = 20.0;
 
 /// 48.0
-const double submitButtonHeight = 20.0;
+const double submitButtonHeight = 48.0;
 
 /// 페이지 여백
 const EdgeInsetsGeometry pagePadding = EdgeInsets.all(20.0);
