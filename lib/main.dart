@@ -17,12 +17,12 @@ void main() async {
 
   initializeDateFormatting(); // 날짜 포멧을 한글로 받아오기 위한 import
 
-  notification.initializeTimeZone();
-  notification.initializeNotification();
-
   // openBox가 되지 않고 앱이 실행하면 에러가 발생함으로 awit 추가
   await hive.initializeHive();
   //runApp이 되기전에 꼭 hive를 초기화 하고 앱 실행
+
+  notification.initializeTimeZone();
+  notification.initializeNotification();
   runApp(const MyApp());
 }
 
